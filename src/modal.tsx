@@ -27,11 +27,10 @@ export const ModalResult = (props: { onClose: () => void, open: boolean, filtr: 
 
 
     const [table, setTable] = useState<[IData] | null>(null);
-    // const [result, setResult] = useState<IData[] | null>(null);
 
 
-    const fileHandler = async () => {
-        if (filtr?.valueCategory === "Фильм") {
+    const fileHandler = async () => {  // Метод загрузки данных из бзы знаний и фильтрация нужных данных
+        if (filtr?.valueCategory === "Фильм") { // загружает данные по фильмам
             const res = await fetch('/getFileFilm');
             const body = await res.json();
             let bod : [{name: string,data: [IData] | []}] = body;
@@ -39,10 +38,10 @@ export const ModalResult = (props: { onClose: () => void, open: boolean, filtr: 
             setTable(body[0].data.data);
             result = filter;
             console.log(result,filter)
-            result = DurationCheck();
+            result = DurationCheck(); // Фильтрует по длительности фильмы
 
         } else {
-            const res = await fetch('/getFileSerial');
+            const res = await fetch('/getFileSerial'); // загружает данные по сериалам
             const body = await res.json();
             let bod : [{name: string,data: [IData] | []}] = body;
             let filter = bod[0].data.filter((item,index) => item.length > 0 && index !== 0)
@@ -50,15 +49,18 @@ export const ModalResult = (props: { onClose: () => void, open: boolean, filtr: 
             result = filter;
             console.log(result)
             setTable(body[0]);
-            result = CountCheck()
-            result = AverageCheck()
-            result = CompleteCheck()
+            result = CountCheck() // Фильтрует по кол-ву сезонов
+            result = AverageCheck() // Фильтрует по средней продольжительности серии
+            result = CompleteCheck() // Фильтрует по завершённости сериала
         }
-        result = GenreCheck()
-        result = CountryCheck()
-        result = RatingCheck()
-        result = AgeCheck()
-        result = AgeLimitCheck()
+
+        // Общие методы фильтрации
+
+        result = GenreCheck() // Фильтрация по жанрам
+        result = CountryCheck() // Фильтрация по стране
+        result = RatingCheck() // Фильтрация по рейтингу
+        result = AgeCheck() // Фильтрация по году
+        result = AgeLimitCheck() // Фильтрация по возрастному ограничению
     }
 
     ///// film
@@ -212,9 +214,12 @@ export const ModalResult = (props: { onClose: () => void, open: boolean, filtr: 
                     <ListItem key={index}>
                         <ListItemAvatar>
                             {filtr?.valueCategory == "Фильм" ? <div>
+                                    {/*Вывод Отобранных фильмов*/}
                                  <p style={{fontWeight:'bold'}}>{film[0]}</p> {film[1]}, {film[2]}, рейтинг: {film[3]}, {film[4]}, {film[5]}, время: {film[6]} ч
+
                                 </div> :
                                 <div>
+                                    {/*Вывод Отобранных сериалов*/}
                                     <p style={{fontWeight:'bold'}}>{film[0]}</p>  {film[1]}, {film[2]}, рейтинг: {film[3]}, {film[4]}, {film[5]}, {film[6]} сезон, серия в среднем {film[7]} мин, {film[8] === "Да" ? "Завершён" : "Не завершён"}
                                 </div>
                             }

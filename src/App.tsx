@@ -21,6 +21,8 @@ export type Prop = {
 
 
 function App() {
+
+    // наши параметры для фильтра
     const [valueCategory, setValueCategory] = React.useState("Фильм");
     const [duration, setDuration] = React.useState('Любая');
     const [count, setCount] = React.useState('Любая');
@@ -65,7 +67,7 @@ function App() {
         setAgeLimit(event.target.value as string);
     };
 
-    const FindFilm = () => {
+    const FindFilm = () => { // Метод создающий фильтр
         setFiltr({
             valueCategory,
             duration,
@@ -292,9 +294,11 @@ function App() {
                 onClick={FindFilm}
                 style={{marginTop: '3%'}} variant={"contained"} color={'primary'}>{!filtr ? "Подобрать фильм" : "Изменить подборку" }</Button>
             <div style={{marginTop: "5%", display: filtr ? 'flex' : 'none', alignItems: 'center'}}>
+                {/*Кнопка открытия модального окна для отображения результата*/}
                 <Button variant="outlined" onClick={handleClickOpen}>
                     Открыть подобранные варианты
                 </Button>
+                {/*модальное окно с результатами*/}
                 <ModalResult
                     filtr={filtr}
                     open={open}
